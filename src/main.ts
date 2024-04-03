@@ -13,15 +13,12 @@ async function bootstrap() {
     ]
   })
 
-  // allows PIPEs handle the validation of DTOs and other used structures
-  // and throw the error of being incorrect body and... which are base on DTOs or any types we've
-  // defined in our code
   app.useGlobalPipes(new ValidationPipe({
     stopAtFirstError: true,
     whitelist: true // it will remove any incoming fields inside the request
     // which we have not writen in our DTOs
   }));
-  
+
   await app.listen(PORT);
 }
 bootstrap();

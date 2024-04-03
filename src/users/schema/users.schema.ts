@@ -41,19 +41,21 @@ export class Users {
 export const UsersSchema = SchemaFactory.createForClass(Users);
 
 
-// a hook which will execute before insertion
+// a hook which will be executed before user insertion
 UsersSchema.pre("save", async function () {
     const salt = await bcrypt.genSalt();
     this.password = await bcrypt.hash(this.password, salt);
 });
 
-// a hook which will execute before findOneAndUpdate
+// a hook which will be executed before findOneAndUpdate
 UsersSchema.pre("findOneAndUpdate", async function () {
-    // this.getFilter() gets the id as the filter parameter
-    // this.getUpdate() gets the userUpdateData
-    const user = this.getUpdate()
+    // this.getFilter() => gets the id as the filter parameter
+    // this.getUpdate() => gets the userUpdateData
+    const user = this.getUpdate();
+
     const salt = await bcrypt.genSalt();
-    const PASSWORD = user['password']
+    const PASSWORD = user['password'];
+
     if (!!PASSWORD)
         user['password'] = await bcrypt.hash(PASSWORD, salt);
 });

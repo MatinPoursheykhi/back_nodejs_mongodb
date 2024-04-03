@@ -19,13 +19,16 @@ export class AuthService {
             const { email, password } = loginBody;
 
             const user = await this.usersService.findOneByEmail(email);
-            if (!user) throw new ForbiddenException(`credentials incorrect`);
+            if (!user)
+                throw new ForbiddenException(`credentials incorrect`);
+
             const { id } = user;
 
-            const is_password_match = await costumBcrypt.compare(password, user.password);
-            if (!is_password_match) throw new BadRequestException(`password does not match`);
+            const is_password_match: boolean = await costumBcrypt.compare(password, user.password);
+            if (!is_password_match)
+                throw new BadRequestException(`password does not match`);
 
-            const token = await this.createToken(id); // insert token
+            const token: string = await this.createToken(id); // insert token
             await this.usersService.updateToken(id, token); // update user token
 
             return {
