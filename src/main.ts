@@ -15,10 +15,9 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe({
     stopAtFirstError: true,
-    whitelist: true // it will remove any incoming fields inside the request
-    // which we have not writen in our DTOs
+    whitelist: true,
   }));
-
+  
   await app.listen(PORT);
 }
 bootstrap();

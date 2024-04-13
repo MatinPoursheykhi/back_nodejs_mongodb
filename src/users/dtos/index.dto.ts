@@ -1,6 +1,6 @@
 import { PartialType } from "@nestjs/mapped-types";
 import { IsEmail, IsEnum, IsMobilePhone, IsNotEmpty, IsOptional, IsString } from "class-validator";
-import { Occupation, Role, Skills } from "../constants";
+import { Role } from "../constants";
 
 export class UserInsertDTO {
     @IsString()
@@ -10,7 +10,7 @@ export class UserInsertDTO {
     @IsString()
     @IsNotEmpty()
     @IsMobilePhone('fa-IR')
-    phone: string
+    phone: string;
     @IsString()
     @IsNotEmpty()
     userName: string;
@@ -19,14 +19,8 @@ export class UserInsertDTO {
     password: string;
     @IsString()
     @IsNotEmpty()
-    @IsEnum(Occupation)
-    occupation: string;
-    @IsString()
-    @IsNotEmpty()
     @IsEnum(Role)
     role: string;
-    @IsNotEmpty()
-    skills: string[];
 };
 
 // PartialType would help to use the properties of extended class as optional  
@@ -42,9 +36,5 @@ export class UserSearchQuery {
     @IsOptional()
     phone: string;
     @IsOptional()
-    occupation: string;
-    @IsOptional()
     role: string;
-    @IsOptional()
-    skills: string;
 }

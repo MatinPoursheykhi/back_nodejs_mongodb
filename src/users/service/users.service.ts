@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { UserInsertDTO, UserSearchQuery, UserUpdateDTO } from '../dtos';
+import { UserInsertDTO, UserSearchQuery, UserUpdateDTO } from '../dtos/index.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Users } from 'src/users/schema/users.schema';
 import { Model } from 'mongoose';
@@ -14,7 +14,6 @@ export class UsersService {
             await newUser.save();
 
             const { id } = newUser;
-
             // to exclude the password and token
             const createdUser = await this.userModel.findById(id);
 
@@ -28,7 +27,6 @@ export class UsersService {
         return await this.userModel.find(userSearchQuery).exec();
     }
 
-
     async update(userUpdateData: UserUpdateDTO, id: string): Promise<Users> {
         try {
             return await this.userModel.findByIdAndUpdate(id, userUpdateData).exec();
@@ -38,7 +36,10 @@ export class UsersService {
     }
 
     async findAll(): Promise<Users[]> {
-        return await this.userModel.find();
+        // .populate('vehicles') of .populate(['vehicles']) : you just have to specify the path of the property that u want to populate 
+        // .populate('vehicles.nameOfThatPropertyOfThatModel') : if vehicles has any ref inside it as nested
+        // for multiple related collections : .populate(['vehicles','otherCollection1','otherCollection2'])
+        return await this.userModel.find().populate(['vehicles']);
     }
 
     async remove(id: string): Promise<Users> {

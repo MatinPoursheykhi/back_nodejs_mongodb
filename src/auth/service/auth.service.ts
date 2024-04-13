@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { LoginDTO } from 'src/auth/dtos';
 import * as costumBcrypt from '../../bcrypt/utils'
 import { UsersService } from 'src/users/service/users.service';
+import { Payload } from '../types';
 
 @Injectable()
 export class AuthService {
@@ -28,8 +29,8 @@ export class AuthService {
             if (!is_password_match)
                 throw new BadRequestException(`password does not match`);
 
-            const token: string = await this.createToken(id); // insert token
-            await this.usersService.updateToken(id, token); // update user token
+            const token: string = await this.createToken(id);
+            await this.usersService.updateToken(id, token);
 
             return {
                 access_token: token
@@ -40,8 +41,8 @@ export class AuthService {
     }
 
     // get the user id, reutrns the created token
-    async createToken(id: string) {
-        const payload = { sub: id };
+    async createToken(id: string): Promise<string> {
+        const payload: Payload = { sub: id };
         return await this.jwtService.signAsync(payload);
     }
 }

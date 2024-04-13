@@ -3,16 +3,13 @@ import { UsersModule } from './users/users.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
+import { VehicleModule } from './vehicle/vehicle.module';
 
-const connectStr = `mongodb://localhost/mekanizm`
+const connectStr: string = `mongodb://localhost/project`;
 // 'mongodb://username:password@localhost/test' -> if database needed auth
 
 @Module({
   imports: [
-    UsersModule,
-    AuthModule,
-
-    // it makes a database which its name is (mekanizm)
     MongooseModule.forRoot(connectStr),
 
     // it makes a database which its name is (any), so we can use multy databases
@@ -31,6 +28,9 @@ const connectStr = `mongodb://localhost/mekanizm`
         limit: 100, // 100 req per 1 min
       },
     ]),
+    UsersModule,
+    AuthModule,
+    VehicleModule,
   ],
   providers: [
     {

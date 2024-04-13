@@ -9,7 +9,7 @@ import { jwtConstants } from './jwt';
     imports: [
         UsersModule,
         JwtModule.register({
-            global: true,
+            global: true, // access to JwtModule on every where of the project
             secret: jwtConstants.secret,
             signOptions: { expiresIn: '1h' },
         }),
